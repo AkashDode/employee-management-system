@@ -14,7 +14,7 @@ pipeline {
             steps {
 
                 git branch: 'main',
-                url: 'https://github.com/YOUR_USERNAME/employee-management-system.git'
+                url: 'https://github.com/AkashDode/employee-management-system.git'
             }
         }
 
