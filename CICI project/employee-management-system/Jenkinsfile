@@ -53,7 +53,7 @@ pipeline {
                     echo "Uploading WAR to S3..."
                     aws s3 cp \
                     target/employee-management-system.war \
-                    s3://employee-artifacts-bucket/
+                    s3://employee-management-artifacts-akash
                     '''
                 }
             }
