@@ -37,19 +37,24 @@ pipeline {
             }
         }
 
-        stage('Test AWS Credentials') {
+        stage('Upload WAR to S3') {
             steps {
                 withCredentials([[
-                $class: 'AmazonWebServicesCredentialsBinding',
-                credentialsId: 'aws-s3'
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-s3'
                 ]]) {
-                sh '''
-                export AWS_DEFAULT_REGION=us-west-1
 
-                echo "Testing AWS Credentials..."
+                    sh '''
+                    export AWS_DEFAULT_REGION=us-west-1
 
-                aws sts get-caller-identity
-                '''
+                    echo "Verifying AWS Identity..."
+                    aws sts get-caller-identity
+
+                    echo "Uploading WAR to S3..."
+                    aws s3 cp \
+                    target/employee-management-system.war \
+                    s3://employee-artifacts-bucket/
+                    '''
                 }
             }
         }
@@ -57,11 +62,15 @@ pipeline {
 
     post {
         success {
-            echo 'Build Successful!'
+            echo 'Pipeline executed successfully!'
         }
 
         failure {
-            echo 'Build Failed!'
+            echo 'Pipeline execution failed!'
+        }
+
+        always {
+            echo 'Pipeline execution completed.'
         }
     }
 }
