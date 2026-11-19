@@ -37,15 +37,22 @@ pipeline {
                 archiveArtifacts artifacts: 'target/*.war'
             }
         }
-    }
+
         stage('Upload WAR to S3') {
             steps {
-                sh '''
-                aws s3 cp target/employee-management-system.war \
-                s3://employee-artifacts-bucket/
-                '''
-        }
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-s3'
+                ]]) {
 
+                    sh '''
+                    aws s3 cp target/employee-management-system.war \
+                    s3://employee-artifacts-bucket/
+                    '''
+                }
+            }
+        }
+    }
 
     post {
         success {
