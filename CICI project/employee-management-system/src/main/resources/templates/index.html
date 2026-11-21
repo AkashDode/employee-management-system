@@ -1,44 +1,269 @@
+
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
+
     <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Employee Management System</title>
 
+    <!-- Apply theme before page rendering to prevent flashing -->
+    <script>
+        (function () {
+            try {
+                const theme = localStorage.getItem("theme") || "light";
+                document.documentElement.classList.toggle(
+                    "dark-mode",
+                    theme === "dark"
+                );
+            } catch (error) {
+                console.error("Theme initialization failed:", error);
+            }
+        })();
+    </script>
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
 
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- Custom CSS -->
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
 
 <body>
 
-<div class="container mt-5">
+<!-- NAVBAR -->
 
-    <div class="card shadow">
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
 
-        <div class="card-header bg-primary text-white">
-            <h3>Employee Management System</h3>
-        </div>
+    <div class="container">
 
-        <div class="card-body">
+        <a class="navbar-brand" href="/">
 
-            <a href="/add" class="btn btn-success mb-3">
+            <i class="fas fa-users me-2"></i>
+            Employee Management System
+
+        </a>
+
+        <div class="d-flex align-items-center flex-wrap gap-2">
+
+            <!-- ADMIN ONLY -->
+
+            <a href="/add"
+               sec:authorize="hasRole('ADMIN')"
+               class="btn btn-success">
+
+                <i class="fas fa-user-plus me-1"></i>
                 Add Employee
+
             </a>
 
-            <table class="table table-bordered table-striped">
+            <!-- DARK MODE BUTTON -->
+
+            <button type="button"
+                    id="themeToggle"
+                    class="btn btn-light"
+                    aria-label="Toggle dark mode"
+                    title="Toggle dark mode">
+
+                <i class="fas fa-moon"></i>
+
+            </button>
+
+            <!-- LOGOUT -->
+
+            <form th:action="@{/logout}"
+                  method="post"
+                  class="m-0">
+
+                <button type="submit"
+                        class="btn btn-danger">
+
+                    <i class="fas fa-sign-out-alt me-1"></i>
+                    Logout
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- HERO SECTION -->
+
+<section class="hero-section">
+
+    <div class="container">
+
+        <h1 class="fade-up">
+            Employee Management Dashboard
+        </h1>
+
+        <p>
+            Secure Employee Management Application built with
+            Spring Boot, MySQL, Spring Security, Docker,
+            Jenkins, SonarQube and AWS.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- STATISTICS SECTION -->
+
+<div class="container dashboard-section">
+
+    <div class="row g-4">
+
+        <!-- EMPLOYEE COUNT -->
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="card stat-card">
+
+                <div class="card-body text-center">
+
+                    <i class="fas fa-users icon"></i>
+
+                    <h2 th:text="${employees.size()}">
+                        0
+                    </h2>
+
+                    <p>Total Employees</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- DATABASE -->
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="card stat-card">
+
+                <div class="card-body text-center">
+
+                    <i class="fas fa-database icon"></i>
+
+                    <h2>MySQL</h2>
+
+                    <p>Database Connected</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="col-lg-4 col-md-12">
+
+            <div class="card stat-card">
+
+                <div class="card-body text-center">
+
+                    <i class="fas fa-circle-check icon"></i>
+
+                    <h2>Active</h2>
+
+                    <p>System Running</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- EMPLOYEE TABLE -->
+
+<div class="container">
+
+    <div class="glass-table">
+
+        <div class="table-header">
+
+            <div class="row align-items-center g-3">
+
+                <div class="col-md-6">
+
+                    <h3>
+
+                        <i class="fas fa-address-card me-2"></i>
+                        Employee Records
+
+                    </h3>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="search-box">
+
+                        <input type="text"
+                               id="searchInput"
+                               class="form-control"
+                               placeholder="Search employee by name, email or department"
+                               aria-label="Search employees">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
 
                 <thead>
+
                 <tr>
+
                     <th>ID</th>
+
                     <th>Name</th>
+
                     <th>Email</th>
+
                     <th>Department</th>
+
                     <th>Salary</th>
-                    <th>Action</th>
+
+                    <th>Actions</th>
+
                 </tr>
+
                 </thead>
+
 
                 <tbody>
 
@@ -52,20 +277,43 @@
 
                     <td th:text="${employee.department}"></td>
 
-                    <td th:text="${employee.salary}"></td>
+                    <td>
+                        ₹ <span th:text="${employee.salary}"></span>
+                    </td>
 
                     <td>
 
-                        <a th:href="@{/edit/{id}(id=${employee.id})}"
-                           class="btn btn-warning btn-sm me-1">
-                            Edit
+                        <!-- ADMIN ONLY: EDIT -->
+
+                        <a sec:authorize="hasRole('ADMIN')"
+                           th:href="@{/edit/{id}(id=${employee.id})}"
+                           class="btn btn-warning btn-sm action-btn me-1">
+
+                            <i class="fas fa-edit"></i>
+
                         </a>
 
-                        <a th:href="@{/delete/{id}(id=${employee.id})}"
-                           class="btn btn-danger btn-sm"
+
+                        <!-- ADMIN ONLY: DELETE -->
+
+                        <a sec:authorize="hasRole('ADMIN')"
+                           th:href="@{/delete/{id}(id=${employee.id})}"
+                           class="btn btn-danger btn-sm action-btn"
                            onclick="return confirmDelete()">
-                            Delete
+
+                            <i class="fas fa-trash"></i>
+
                         </a>
+
+
+                        <!-- USER VIEW -->
+
+                        <span sec:authorize="hasRole('USER')"
+                              class="badge bg-info">
+
+                            Read Only
+
+                        </span>
 
                     </td>
 
@@ -81,7 +329,108 @@
 
 </div>
 
-<script th:src="@{/js/app.js}"></script>
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+    <p>
+
+        © 2026 Employee Management System |
+        Spring Boot + Spring Security + MySQL
+
+    </p>
+
+</footer>
+
+
+<!-- SEARCH AND DELETE CONFIRMATION -->
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const searchInput = document.getElementById("searchInput");
+
+        searchInput.addEventListener("keyup", function () {
+
+            const value = this.value.toLowerCase();
+
+            const rows = document.querySelectorAll("tbody tr");
+
+            rows.forEach(function (row) {
+
+                row.style.display =
+                    row.innerText.toLowerCase().includes(value)
+                        ? ""
+                        : "none";
+
+            });
+
+        });
+
+    });
+
+
+    function confirmDelete() {
+
+        return confirm(
+            "Are you sure you want to delete this employee?"
+        );
+
+    }
+
+</script>
+
+
+<!-- DARK MODE TOGGLE -->
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const button = document.getElementById("themeToggle");
+
+        // Update icon based on current theme
+
+        function updateThemeIcon() {
+
+            const isDark =
+                document.documentElement.classList.contains("dark-mode");
+
+            button.innerHTML = isDark
+                ? '<i class="fas fa-sun"></i>'
+                : '<i class="fas fa-moon"></i>';
+
+            button.setAttribute(
+                "aria-label",
+                isDark ? "Switch to light mode" : "Switch to dark mode"
+            );
+
+        }
+
+        // Toggle theme
+
+        button.addEventListener("click", function () {
+
+            const isDark =
+                document.documentElement.classList.toggle("dark-mode");
+
+            localStorage.setItem(
+                "theme",
+                isDark ? "dark" : "light"
+            );
+
+            updateThemeIcon();
+
+        });
+
+        updateThemeIcon();
+
+    });
+
+</script>
 
 </body>
+
 </html>
