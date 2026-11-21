@@ -13,10 +13,12 @@ public class EmployeeController {
     private final EmployeeService service;
 
     public EmployeeController(EmployeeService service) {
-
         this.service = service;
     }
 
+    /**
+     * Dashboard / Home Page
+     */
     @GetMapping("/")
     public String viewHome(Model model) {
 
@@ -27,6 +29,9 @@ public class EmployeeController {
         return "index";
     }
 
+    /**
+     * Add Employee Page
+     */
     @GetMapping("/add")
     public String addEmployee(Model model) {
 
@@ -37,6 +42,9 @@ public class EmployeeController {
         return "add-employee";
     }
 
+    /**
+     * Save Employee
+     */
     @PostMapping("/save")
     public String saveEmployee(
             @ModelAttribute Employee employee) {
@@ -46,6 +54,39 @@ public class EmployeeController {
         return "redirect:/";
     }
 
+    /**
+     * Edit Employee Page
+     */
+    @GetMapping("/edit/{id}")
+    public String editEmployee(
+            @PathVariable Long id,
+            Model model) {
+
+        Employee employee =
+                service.findById(id);
+
+        model.addAttribute(
+                "employee",
+                employee);
+
+        return "edit-employee";
+    }
+
+    /**
+     * Update Employee
+     */
+    @PostMapping("/update")
+    public String updateEmployee(
+            @ModelAttribute Employee employee) {
+
+        service.save(employee);
+
+        return "redirect:/";
+    }
+
+    /**
+     * Delete Employee
+     */
     @GetMapping("/delete/{id}")
     public String deleteEmployee(
             @PathVariable Long id) {
