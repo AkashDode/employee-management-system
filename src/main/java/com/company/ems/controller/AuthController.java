@@ -1,9 +1,8 @@
 package com.company.ems.controller;
 
 import com.company.ems.entity.User;
-import com.company.ems.repository.UserRepository;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.company.ems.exception.DuplicateUserException;
+import com.company.ems.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,15 +10,10 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class AuthController {
 
-    private final UserRepository repository;
-    private final PasswordEncoder encoder;
+    private final UserService userService;
 
-    public AuthController(
-            UserRepository repository,
-            PasswordEncoder encoder) {
-
-        this.repository = repository;
-        this.encoder = encoder;
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/login")
@@ -43,23 +37,14 @@ public class AuthController {
             @ModelAttribute User user,
             Model model) {
 
-        if(repository.findByUsername(
-                user.getUsername()).isPresent()) {
-
+        try {
+            userService.registerUser(user);
+        } catch (DuplicateUserException exception) {
             model.addAttribute(
                     "error",
-                    "Username already exists");
-
+                    exception.getMessage());
             return "signup";
         }
-
-        user.setPassword(
-                encoder.encode(
-                        user.getPassword()));
-
-        user.setRole("USER");
-
-        repository.save(user);
 
         return "redirect:/login";
     }
