@@ -88,7 +88,7 @@ public class EmployeeController {
     /**
      * Delete Employee
      */
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String deleteEmployee(
             @PathVariable Long id) {
 
