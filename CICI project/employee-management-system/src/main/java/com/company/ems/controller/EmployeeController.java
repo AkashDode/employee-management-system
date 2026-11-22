@@ -6,6 +6,7 @@ import com.company.ems.service.EmployeeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class EmployeeController {
@@ -20,11 +21,7 @@ public class EmployeeController {
      * Dashboard / Home Page
      */
     @GetMapping("/")
-    public String viewHome(Model model) {
-
-        model.addAttribute(
-                "employees",
-                service.findAll());
+    public String viewHome() {
 
         return "index";
     }
@@ -47,11 +44,15 @@ public class EmployeeController {
      */
     @PostMapping("/save")
     public String saveEmployee(
-            @ModelAttribute Employee employee) {
+            @ModelAttribute Employee employee,
+            RedirectAttributes redirectAttributes) {
 
         service.save(employee);
+        redirectAttributes.addFlashAttribute(
+                "successMessage",
+                "Employee successfully added.");
 
-        return "redirect:/";
+        return "redirect:/dashboard";
     }
 
     /**

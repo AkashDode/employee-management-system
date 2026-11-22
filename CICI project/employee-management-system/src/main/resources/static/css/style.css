@@ -704,3 +704,263 @@ body{
 
     color:#cbd5e1;
 }
+/* ==========================================
+   EMPLOYEE MANAGEMENT SYSTEM DASHBOARD
+========================================== */
+
+.stat-card {
+
+    border: none;
+
+    border-radius: 18px;
+
+    background: #fff;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.08);
+
+    transition:
+        all .3s ease;
+}
+
+.stat-card:hover {
+
+    transform:
+        translateY(-6px);
+
+    box-shadow:
+        0 20px 40px rgba(11,87,208,.15);
+}
+
+.stat-value {
+
+    font-size: 2rem;
+
+    font-weight: 800;
+
+    color: var(--ems-blue);
+
+    margin-top: .5rem;
+}
+
+.table-responsive {
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 1rem;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.08);
+}
+
+canvas {
+
+    width: 100% !important;
+
+    height: 320px !important;
+}
+
+/* Analytics Cards */
+
+.analytics-card {
+
+    min-height: 170px;
+}
+
+/* Charts */
+
+.chart-card {
+
+    min-height: 420px;
+}
+
+/* Dark Mode Enhancements */
+
+.dark-mode .stat-card {
+
+    background: #1e293b;
+
+    color: white;
+}
+
+.dark-mode .table-responsive {
+
+    background: #1e293b;
+}
+
+.dark-mode .table {
+
+    --bs-table-color: #ffffff;
+    --bs-table-bg: #1e293b;
+    --bs-table-border-color: #334155;
+    --bs-table-hover-color: #ffffff;
+    --bs-table-hover-bg: #334155;
+
+    color: white;
+}
+
+.dark-mode .table thead th {
+
+    background: #334155;
+
+    color: white;
+}
+
+.dark-mode .table tbody tr:hover {
+
+    background: #243244;
+}
+
+/* Mobile */
+
+@media (max-width:768px){
+
+    .stat-value{
+
+        font-size:1.5rem;
+    }
+
+    canvas{
+
+        height:250px !important;
+    }
+}
+
+/* =====================================
+   CURRENT THYMELEAF LAYOUT SUPPORT
+===================================== */
+
+.navbar-ems{
+
+    background:linear-gradient(
+            135deg,
+            #2563eb,
+            #4f46e5);
+
+    box-shadow:
+            0 5px 20px rgba(0,0,0,.08);
+}
+
+.navbar-ems .navbar-brand{
+
+    color:white !important;
+
+    font-weight:700;
+}
+
+.navbar-ems .nav-link{
+
+    color:white !important;
+
+    font-weight:500;
+}
+
+.navbar-ems .nav-link:hover{
+
+    opacity:.9;
+}
+
+.page-header{
+
+    background:linear-gradient(
+            135deg,
+            #2563eb,
+            #4f46e5);
+
+    color:white;
+
+    padding:2rem 0;
+}
+
+.page-header h1{
+
+    font-weight:700;
+}
+
+.page-header .text-muted-ems{
+
+    color:#dbeafe !important;
+}
+
+.site-footer{
+
+    background:#0f172a;
+
+    color:#cbd5e1;
+
+    padding:3rem 0;
+}
+
+.site-footer a{
+
+    color:#93c5fd;
+
+    text-decoration:none;
+}
+
+.site-footer a:hover{
+
+    color:white;
+}
+
+.footer-bottom{
+
+    margin-top:2rem;
+
+    padding-top:1rem;
+
+    border-top:
+            1px solid rgba(
+                255,
+                255,
+                255,
+                .15);
+}
+
+.brand-mark{
+
+    width:36px;
+
+    height:36px;
+}
+
+.user-chip{
+
+    color:white;
+
+    font-size:.9rem;
+}
+
+/* Dashboard Charts */
+
+.chart-card{
+
+    background:white;
+
+    border-radius:24px;
+
+    padding:1.5rem;
+
+    box-shadow:
+            0 12px 30px
+            rgba(0,0,0,.08);
+}
+
+/* Dark Mode */
+
+.dark-mode .navbar-ems{
+
+    background:#111827;
+}
+
+.dark-mode .page-header{
+
+    background:#111827;
+}
+
+.dark-mode .site-footer{
+
+    background:#020617;
+}

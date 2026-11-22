@@ -1,436 +1,136 @@
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Employee Management System</title>
-
-    <!-- Apply theme before page rendering to prevent flashing -->
-    <script>
-        (function () {
-            try {
-                const theme = localStorage.getItem("theme") || "light";
-                document.documentElement.classList.toggle(
-                    "dark-mode",
-                    theme === "dark"
-                );
-            } catch (error) {
-                console.error("Theme initialization failed:", error);
-            }
-        })();
-    </script>
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet"
-          th:href="@{/css/style.css}">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-</head>
-
+<head th:replace="~{layout :: head('Home')}"></head>
 <body>
-
-<!-- NAVBAR -->
-
-<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
-
-    <div class="container">
-
-        <a class="navbar-brand" href="/">
-
-            <i class="fas fa-users me-2"></i>
-            Employee Management System
-
-        </a>
-
-        <div class="d-flex align-items-center flex-wrap gap-2">
-
-            <!-- ADMIN ONLY -->
-
-            <a href="/add"
-               sec:authorize="hasRole('ADMIN')"
-               class="btn btn-success">
-
-                <i class="fas fa-user-plus me-1"></i>
-                Add Employee
-
-            </a>
-
-            <!-- DARK MODE BUTTON -->
-
-            <button type="button"
-                    id="themeToggle"
-                    class="btn btn-light"
-                    aria-label="Toggle dark mode"
-                    title="Toggle dark mode">
-
-                <i class="fas fa-moon"></i>
-
-            </button>
-
-            <!-- LOGOUT -->
-
-            <form th:action="@{/logout}"
-                  method="post"
-                  class="m-0">
-
-                <button type="submit"
-                        class="btn btn-danger">
-
-                    <i class="fas fa-sign-out-alt me-1"></i>
-                    Logout
-
-                </button>
-
-            </form>
-
-        </div>
-
-    </div>
-
-</nav>
-
-
-<!-- HERO SECTION -->
-
-<section class="hero-section">
-
-    <div class="container">
-
-        <h1 class="fade-up">
-            Employee Management Dashboard
-        </h1>
-
-        <p>
-            Secure Employee Management Application built with
-            Spring Boot, MySQL, Spring Security, Docker,
-            Jenkins, SonarQube and AWS.
-        </p>
-
-    </div>
-
-</section>
-
-
-<!-- STATISTICS SECTION -->
-
-<div class="container dashboard-section">
-
-    <div class="row g-4">
-
-        <!-- EMPLOYEE COUNT -->
-
-        <div class="col-lg-4 col-md-6">
-
-            <div class="card stat-card">
-
-                <div class="card-body text-center">
-
-                    <i class="fas fa-users icon"></i>
-
-                    <h2 th:text="${employees.size()}">
-                        0
-                    </h2>
-
-                    <p>Total Employees</p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- DATABASE -->
-
-        <div class="col-lg-4 col-md-6">
-
-            <div class="card stat-card">
-
-                <div class="card-body text-center">
-
-                    <i class="fas fa-database icon"></i>
-
-                    <h2>MySQL</h2>
-
-                    <p>Database Connected</p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- STATUS -->
-
-        <div class="col-lg-4 col-md-12">
-
-            <div class="card stat-card">
-
-                <div class="card-body text-center">
-
-                    <i class="fas fa-circle-check icon"></i>
-
-                    <h2>Active</h2>
-
-                    <p>System Running</p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- EMPLOYEE TABLE -->
-
-<div class="container">
-
-    <div class="glass-table">
-
-        <div class="table-header">
-
-            <div class="row align-items-center g-3">
-
-                <div class="col-md-6">
-
-                    <h3>
-
-                        <i class="fas fa-address-card me-2"></i>
-                        Employee Records
-
-                    </h3>
-
-                </div>
-
-                <div class="col-md-6">
-
-                    <div class="search-box">
-
-                        <input type="text"
-                               id="searchInput"
-                               class="form-control"
-                               placeholder="Search employee by name, email or department"
-                               aria-label="Search employees">
-
+<header th:replace="~{layout :: navbar}"></header>
+
+<main id="main">
+    <section class="hero on-dark" aria-labelledby="hero-title">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <h1 id="hero-title" class="mb-3">Employee Management, All in One Place</h1>
+                    <p class="lead mb-4">Keep employee records, departments and access control together in one
+                        secure, easy-to-use system.</p>
+                    <div class="d-flex flex-wrap gap-3" sec:authorize="!isAuthenticated()">
+                        <a class="btn btn-lg btn-hero-primary" th:href="@{/signup}">Create Account</a>
+                        <a class="btn btn-lg btn-hero-outline" th:href="@{/login}">Login</a>
                     </div>
-
+                    <div sec:authorize="isAuthenticated()">
+                        <a class="btn btn-lg btn-hero-primary" th:href="@{/dashboard}">Go to Dashboard</a>
+                    </div>
                 </div>
-
+                <div class="col-lg-6" aria-hidden="true">
+                    <div class="mock-card">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <strong>Team overview</strong>
+                            <span class="badge text-bg-primary">Employee Records</span>
+                        </div>
+                        <div class="mock-row">
+                            <span class="mock-avatar">E</span>
+                            <div class="flex-grow-1">
+                                <div class="mock-line w-50 mb-2"></div>
+                                <div class="mock-line w-75"></div>
+                            </div>
+                        </div>
+                        <div class="mock-row">
+                            <span class="mock-avatar">E</span>
+                            <div class="flex-grow-1">
+                                <div class="mock-line w-75 mb-2"></div>
+                                <div class="mock-line w-50"></div>
+                            </div>
+                        </div>
+                        <div class="mock-row">
+                            <span class="mock-avatar">E</span>
+                            <div class="flex-grow-1">
+                                <div class="mock-line w-50 mb-2"></div>
+                                <div class="mock-line w-75"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
         </div>
+    </section>
 
-
-        <div class="table-responsive">
-
-            <table class="table table-hover align-middle">
-
-                <thead>
-
-                <tr>
-
-                    <th>ID</th>
-
-                    <th>Name</th>
-
-                    <th>Email</th>
-
-                    <th>Department</th>
-
-                    <th>Salary</th>
-
-                    <th>Actions</th>
-
-                </tr>
-
-                </thead>
-
-
-                <tbody>
-
-                <tr th:each="employee : ${employees}">
-
-                    <td th:text="${employee.id}"></td>
-
-                    <td th:text="${employee.name}"></td>
-
-                    <td th:text="${employee.email}"></td>
-
-                    <td th:text="${employee.department}"></td>
-
-                    <td>
-                        ₹ <span th:text="${employee.salary}"></span>
-                    </td>
-
-                    <td>
-
-                        <!-- ADMIN ONLY: EDIT -->
-
-                        <a sec:authorize="hasRole('ADMIN')"
-                           th:href="@{/edit/{id}(id=${employee.id})}"
-                           class="btn btn-warning btn-sm action-btn me-1">
-
-                            <i class="fas fa-edit"></i>
-
-                        </a>
-
-
-                        <!-- ADMIN ONLY: DELETE -->
-
-                        <a sec:authorize="hasRole('ADMIN')"
-                           th:href="@{/delete/{id}(id=${employee.id})}"
-                           class="btn btn-danger btn-sm action-btn"
-                           onclick="return confirmDelete()">
-
-                            <i class="fas fa-trash"></i>
-
-                        </a>
-
-
-                        <!-- USER VIEW -->
-
-                        <span sec:authorize="hasRole('USER')"
-                              class="badge bg-info">
-
-                            Read Only
-
-                        </span>
-
-                    </td>
-
-                </tr>
-
-                </tbody>
-
-            </table>
-
+    <section id="features" class="section" aria-labelledby="features-title">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 id="features-title" class="section-title">Everything you need to manage your team</h2>
+                <p class="text-muted-ems mb-0">Employee records, department organization and secure access in one place.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <article class="card feature-card h-100 p-4">
+                        <div class="feature-icon mb-3" aria-hidden="true">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="4" y="3" width="16" height="18" rx="2"/>
+                                <path d="M8 8h8M8 12h8M8 16h5"/>
+                            </svg>
+                        </div>
+                        <h3 class="h5">Employee Records</h3>
+                        <p class="text-muted-ems mb-0">Manage employee names, emails, departments and salaries in one searchable list.</p>
+                    </article>
+                </div>
+                <div class="col-md-4">
+                    <article class="card feature-card h-100 p-4">
+                        <div class="feature-icon mb-3" aria-hidden="true">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="3" width="6" height="5" rx="1"/>
+                                <rect x="3" y="16" width="6" height="5" rx="1"/>
+                                <rect x="15" y="16" width="6" height="5" rx="1"/>
+                                <path d="M12 8v4M6 16v-4h12v4"/>
+                            </svg>
+                        </div>
+                        <h3 class="h5">Departments</h3>
+                        <p class="text-muted-ems mb-0">Organize employees by department and find records with built-in search.</p>
+                    </article>
+                </div>
+                <div class="col-md-4">
+                    <article class="card feature-card h-100 p-4">
+                        <div class="feature-icon mb-3" aria-hidden="true">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/>
+                                <path d="M9 12l2 2 4-4"/>
+                            </svg>
+                        </div>
+                        <h3 class="h5">Secure Access</h3>
+                        <p class="text-muted-ems mb-0">Role-based access lets administrators manage records and users securely sign in.</p>
+                    </article>
+                </div>
+            </div>
         </div>
+    </section>
 
-    </div>
+    <section id="about" class="section section-alt" aria-labelledby="about-title">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6">
+                    <h2 id="about-title" class="section-title">About Employee Management System</h2>
+                    <p class="text-muted-ems mb-0">A straightforward way to maintain employee records, organize teams and
+                        control access to sensitive information.</p>
+                </div>
+                <div class="col-lg-6">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-3"><strong>Simple.</strong> <span class="text-muted-ems">Manage records in a few steps.</span></li>
+                        <li class="mb-3"><strong>Responsive.</strong> <span class="text-muted-ems">Use the application on desktop, tablet or mobile.</span></li>
+                        <li><strong>Role-based.</strong> <span class="text-muted-ems">Access is controlled by user roles.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
-</div>
+    <section id="contact" class="section" aria-labelledby="contact-title">
+        <div class="container">
+            <h2 id="contact-title" class="section-title mb-4">Need help?</h2>
+            <p class="text-muted-ems mb-0">For account access or assistance using the system, contact your system administrator.</p>
+        </div>
+    </section>
+</main>
 
-
-<!-- FOOTER -->
-
-<footer class="footer">
-
-    <p>
-
-        © 2026 Employee Management System |
-        Spring Boot + Spring Security + MySQL
-
-    </p>
-
-</footer>
-
-
-<!-- SEARCH AND DELETE CONFIRMATION -->
-
-<script>
-
-    document.addEventListener("DOMContentLoaded", function () {
-
-        const searchInput = document.getElementById("searchInput");
-
-        searchInput.addEventListener("keyup", function () {
-
-            const value = this.value.toLowerCase();
-
-            const rows = document.querySelectorAll("tbody tr");
-
-            rows.forEach(function (row) {
-
-                row.style.display =
-                    row.innerText.toLowerCase().includes(value)
-                        ? ""
-                        : "none";
-
-            });
-
-        });
-
-    });
-
-
-    function confirmDelete() {
-
-        return confirm(
-            "Are you sure you want to delete this employee?"
-        );
-
-    }
-
-</script>
-
-
-<!-- DARK MODE TOGGLE -->
-
-<script>
-
-    document.addEventListener("DOMContentLoaded", function () {
-
-        const button = document.getElementById("themeToggle");
-
-        // Update icon based on current theme
-
-        function updateThemeIcon() {
-
-            const isDark =
-                document.documentElement.classList.contains("dark-mode");
-
-            button.innerHTML = isDark
-                ? '<i class="fas fa-sun"></i>'
-                : '<i class="fas fa-moon"></i>';
-
-            button.setAttribute(
-                "aria-label",
-                isDark ? "Switch to light mode" : "Switch to dark mode"
-            );
-
-        }
-
-        // Toggle theme
-
-        button.addEventListener("click", function () {
-
-            const isDark =
-                document.documentElement.classList.toggle("dark-mode");
-
-            localStorage.setItem(
-                "theme",
-                isDark ? "dark" : "light"
-            );
-
-            updateThemeIcon();
-
-        });
-
-        updateThemeIcon();
-
-    });
-
-</script>
-
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: scripts}"></th:block>
 </body>
-
 </html>

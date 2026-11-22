@@ -8,6 +8,7 @@
     <groupId>com.company</groupId>
     <artifactId>employee-management-system</artifactId>
     <version>1.0.0</version>
+    <name>Employee Management System</name>
 
     <packaging>war</packaging>
 
