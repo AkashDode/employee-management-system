@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{layout :: head('Home')}"></head>
+<head th:replace="~{layout :: head('Manage Your Team')}"></head>
 <body>
 <header th:replace="~{layout :: navbar}"></header>
 
@@ -10,9 +10,10 @@
         <div class="container">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6">
-                    <h1 id="hero-title" class="mb-3">Employee Management, All in One Place</h1>
-                    <p class="lead mb-4">Keep employee records, departments and access control together in one
-                        secure, easy-to-use system.</p>
+                    <span class="hero-badge"><span class="dot" aria-hidden="true"></span> Employee management, simplified</span>
+                    <h1 id="hero-title" class="mb-3">Manage Your Team, All in One Place</h1>
+                    <p class="lead mb-4">TeamHub keeps employee records, departments and secure access together in one
+                        easy-to-use system, so HR and managers spend less time searching and more time leading.</p>
                     <div class="d-flex flex-wrap gap-3" sec:authorize="!isAuthenticated()">
                         <a class="btn btn-lg btn-hero-primary" th:href="@{/signup}">Create Account</a>
                         <a class="btn btn-lg btn-hero-outline" th:href="@{/login}">Login</a>
@@ -21,111 +22,134 @@
                         <a class="btn btn-lg btn-hero-primary" th:href="@{/dashboard}">Go to Dashboard</a>
                     </div>
                 </div>
-                <div class="col-lg-6" aria-hidden="true">
+                <div class="col-lg-6 position-relative" aria-hidden="true">
                     <div class="mock-card">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <strong>Team overview</strong>
-                            <span class="badge text-bg-primary">Employee Records</span>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong>Employee Dashboard</strong><span class="badge text-bg-primary">Live</span>
                         </div>
-                        <div class="mock-row">
-                            <span class="mock-avatar">E</span>
-                            <div class="flex-grow-1">
-                                <div class="mock-line w-50 mb-2"></div>
-                                <div class="mock-line w-75"></div>
-                            </div>
+                        <div class="mock-stats">
+                            <div class="mock-stat"><b>128</b><span>Employees</span></div>
+                            <div class="mock-stat"><b>9</b><span>Departments</span></div>
+                            <div class="mock-stat"><b>2</b><span>Roles</span></div>
                         </div>
-                        <div class="mock-row">
-                            <span class="mock-avatar">E</span>
-                            <div class="flex-grow-1">
-                                <div class="mock-line w-75 mb-2"></div>
-                                <div class="mock-line w-50"></div>
-                            </div>
-                        </div>
-                        <div class="mock-row">
-                            <span class="mock-avatar">E</span>
-                            <div class="flex-grow-1">
-                                <div class="mock-line w-50 mb-2"></div>
-                                <div class="mock-line w-75"></div>
-                            </div>
-                        </div>
+                        <div class="mock-row"><span class="mock-avatar">AR</span><div class="flex-grow-1"><div class="mock-line w-50 mb-2"></div><div class="mock-line w-75"></div></div><span class="badge-dept">Engineering</span></div>
+                        <div class="mock-row"><span class="mock-avatar">JK</span><div class="flex-grow-1"><div class="mock-line w-75 mb-2"></div><div class="mock-line w-50"></div></div><span class="badge-dept">Finance</span></div>
+                        <div class="mock-row"><span class="mock-avatar">MS</span><div class="flex-grow-1"><div class="mock-line w-50 mb-2"></div><div class="mock-line w-75"></div></div><span class="badge-dept">HR</span></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <div class="container strip">
+        <div class="strip-card">
+            <div class="row g-3">
+                <div class="col-6 col-lg-3"><div class="strip-item"><span class="icon-box" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></span><strong>Instant search</strong></div></div>
+                <div class="col-6 col-lg-3"><div class="strip-item"><span class="icon-box" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></span><strong>Mobile ready</strong></div></div>
+                <div class="col-6 col-lg-3"><div class="strip-item"><span class="icon-box" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M17 11a3 3 0 100-6M21 20c0-2.5-1.5-4.6-4-5.5"/></svg></span><strong>Role-based access</strong></div></div>
+                <div class="col-6 col-lg-3"><div class="strip-item"><span class="icon-box" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 118 0v3"/></svg></span><strong>Hashed passwords</strong></div></div>
+            </div>
+        </div>
+    </div>
+
     <section id="features" class="section" aria-labelledby="features-title">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 id="features-title" class="section-title">Everything you need to manage your team</h2>
-                <p class="text-muted-ems mb-0">Employee records, department organization and secure access in one place.</p>
+                <span class="eyebrow">Features</span>
+                <h2 id="features-title" class="section-title">Everything you need to run your team</h2>
+                <p class="text-muted-ems mb-0">Three core capabilities, built to stay out of your way.</p>
             </div>
             <div class="row g-4">
                 <div class="col-md-4">
                     <article class="card feature-card h-100 p-4">
                         <div class="feature-icon mb-3" aria-hidden="true">
-                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="4" y="3" width="16" height="18" rx="2"/>
-                                <path d="M8 8h8M8 12h8M8 16h5"/>
-                            </svg>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
                         </div>
                         <h3 class="h5">Employee Records</h3>
-                        <p class="text-muted-ems mb-0">Manage employee names, emails, departments and salaries in one searchable list.</p>
+                        <p class="text-muted-ems mb-0">Keep names, emails, departments and salaries in one searchable list that is always up to date.</p>
                     </article>
                 </div>
                 <div class="col-md-4">
                     <article class="card feature-card h-100 p-4">
                         <div class="feature-icon mb-3" aria-hidden="true">
-                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="3" width="6" height="5" rx="1"/>
-                                <rect x="3" y="16" width="6" height="5" rx="1"/>
-                                <rect x="15" y="16" width="6" height="5" rx="1"/>
-                                <path d="M12 8v4M6 16v-4h12v4"/>
-                            </svg>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4M6 16v-4h12v4"/></svg>
                         </div>
-                        <h3 class="h5">Departments</h3>
-                        <p class="text-muted-ems mb-0">Organize employees by department and find records with built-in search.</p>
+                        <h3 class="h5">Department Management</h3>
+                        <p class="text-muted-ems mb-0">Organize people by department and find the right team in seconds with built-in search.</p>
                     </article>
                 </div>
                 <div class="col-md-4">
                     <article class="card feature-card h-100 p-4">
                         <div class="feature-icon mb-3" aria-hidden="true">
-                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/>
-                                <path d="M9 12l2 2 4-4"/>
-                            </svg>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
                         </div>
                         <h3 class="h5">Secure Access</h3>
-                        <p class="text-muted-ems mb-0">Role-based access lets administrators manage records and users securely sign in.</p>
+                        <p class="text-muted-ems mb-0">Admins manage records while regular users can view and search them, enforced on the server.</p>
                     </article>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="about" class="section section-alt" aria-labelledby="about-title">
+    <section id="how" class="section section-alt" aria-labelledby="how-title">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="eyebrow">How it works</span>
+                <h2 id="how-title" class="section-title">Up and running in three steps</h2>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4"><div class="panel panel-pad h-100"><div class="step-num" aria-hidden="true">1</div><h3 class="h5">Create your account</h3><p class="text-muted-ems mb-0">Sign up with your email in under a minute.</p></div></div>
+                <div class="col-md-4"><div class="panel panel-pad h-100"><div class="step-num" aria-hidden="true">2</div><h3 class="h5">Log in securely</h3><p class="text-muted-ems mb-0">Your password is hashed and your session is protected.</p></div></div>
+                <div class="col-md-4"><div class="panel panel-pad h-100"><div class="step-num" aria-hidden="true">3</div><h3 class="h5">Manage your team</h3><p class="text-muted-ems mb-0">Search, view and, as an admin, add, edit or remove employees.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section" aria-labelledby="about-title">
         <div class="container">
             <div class="row g-5 align-items-center">
                 <div class="col-lg-6">
-                    <h2 id="about-title" class="section-title">About Employee Management System</h2>
-                    <p class="text-muted-ems mb-0">A straightforward way to maintain employee records, organize teams and
-                        control access to sensitive information.</p>
+                    <span class="eyebrow">About Us</span>
+                    <h2 id="about-title" class="section-title mb-3">People data that is simple, clear and protected</h2>
+                    <p class="text-muted-ems">TeamHub EMS is a lightweight employee management system for growing organizations.
+                        We believe people data should be simple to maintain, easy to find and protected by default.</p>
+                    <p class="text-muted-ems mb-0">This is placeholder text. Replace it with your organization's story and mission.</p>
                 </div>
                 <div class="col-lg-6">
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-3"><strong>Simple.</strong> <span class="text-muted-ems">Manage records in a few steps.</span></li>
-                        <li class="mb-3"><strong>Responsive.</strong> <span class="text-muted-ems">Use the application on desktop, tablet or mobile.</span></li>
-                        <li><strong>Role-based.</strong> <span class="text-muted-ems">Access is controlled by user roles.</span></li>
+                    <ul class="check-list">
+                        <li><span class="tick" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><div><strong>Simple.</strong> <span class="text-muted-ems">Add, view, edit and search in a few clicks.</span></div></li>
+                        <li><span class="tick" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><div><strong>Responsive.</strong> <span class="text-muted-ems">Works on phones, tablets and desktops.</span></div></li>
+                        <li><span class="tick" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><div><strong>Secure.</strong> <span class="text-muted-ems">Hashed passwords, CSRF protection and server-enforced roles.</span></div></li>
+                        <li><span class="tick" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><div><strong>Accessible.</strong> <span class="text-muted-ems">Keyboard friendly with clear labels and contrast.</span></div></li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="section" aria-labelledby="contact-title">
+    <section class="section pt-0" aria-labelledby="cta-title" sec:authorize="!isAuthenticated()">
         <div class="container">
-            <h2 id="contact-title" class="section-title mb-4">Need help?</h2>
-            <p class="text-muted-ems mb-0">For account access or assistance using the system, contact your system administrator.</p>
+            <div class="cta-band on-dark">
+                <h2 id="cta-title" class="section-title">Ready to organize your team?</h2>
+                <p class="mb-4">Create a free account and start managing employees today.</p>
+                <a class="btn btn-lg btn-hero-primary" th:href="@{/signup}">Create Account</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section section-alt" aria-labelledby="contact-title">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="eyebrow">Contact</span>
+                <h2 id="contact-title" class="section-title">Get in touch</h2>
+                <p class="text-muted-ems mb-0">Placeholder details: replace with your real contact information.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3"><div class="contact-card"><span class="icon-box mb-3" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><h3 class="h6">Email</h3><a href="mailto:contact@example.com">contact@example.com</a></div></div>
+                <div class="col-md-6 col-lg-3"><div class="contact-card"><span class="icon-box mb-3" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg></span><h3 class="h6">Phone</h3><a href="tel:+10000000000">+1 (000) 000-0000</a></div></div>
+                <div class="col-md-6 col-lg-3"><div class="contact-card"><span class="icon-box mb-3" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><h3 class="h6">Address</h3><span>123 Example Street, Your City, Country</span></div></div>
+                <div class="col-md-6 col-lg-3"><div class="contact-card"><span class="icon-box mb-3" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><h3 class="h6">Hours</h3><span>Mon to Fri, 9:00 to 17:00</span></div></div>
+            </div>
         </div>
     </section>
 </main>

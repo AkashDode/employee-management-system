@@ -5,87 +5,103 @@
 <body>
 <header th:replace="~{layout :: navbar}"></header>
 <main id="main">
-    <div class="page-header">
+    <div class="page-header on-dark">
         <div class="container d-flex flex-wrap justify-content-between align-items-center gap-3">
             <div>
-                <h1 class="h3 mb-1">Employee Dashboard</h1>
-                <p class="mb-0 text-muted-ems">Welcome back, <span sec:authentication="name">User</span>.</p>
+                <h1 class="h2 mb-1">Employee Dashboard</h1>
+                <p class="mb-0">Welcome back, <strong sec:authentication="name">User</strong>.</p>
             </div>
-            <a class="btn btn-primary" th:href="@{/add}" sec:authorize="hasRole('ADMIN')">Add Employee</a>
+            <a class="btn btn-hero-primary btn-lg" th:href="@{/add}" sec:authorize="hasRole('ADMIN')">Add Employee</a>
         </div>
     </div>
 
-    <div th:replace="~{layout :: alerts}"></div>
-    <script th:if="${successMessage}" th:inline="javascript">
-        alert([[${successMessage}]]);
-    </script>
+    <div class="container page-body">
+        <div th:replace="~{layout :: alerts}"></div>
 
-    <div class="container py-4">
         <div class="row g-3 mb-4">
             <div class="col-sm-6 col-lg-4">
-                <div class="card stat-card p-3">
-                    <div class="text-muted-ems">Total employees</div>
-                    <div class="stat-value" id="total-employees" th:text="${totalEmployees}">0</div>
+                <div class="stat-card">
+                    <span class="icon-box" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M17 11a3 3 0 100-6M21 20c0-2.5-1.5-4.6-4-5.5"/></svg></span>
+                    <div>
+                        <div class="text-muted-ems">Total employees</div>
+                        <div class="stat-value" id="total-employees" th:text="${totalEmployees}">0</div>
+                    </div>
                 </div>
             </div>
             <div class="col-sm-6 col-lg-4">
-                <div class="card stat-card p-3">
-                    <div class="text-muted-ems" th:text="${#strings.isEmpty(query)} ? 'Showing' : 'Matching your search'">Showing</div>
-                    <div class="stat-value" th:text="${#lists.size(employees)}">0</div>
+                <div class="stat-card">
+                    <span class="icon-box" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></span>
+                    <div>
+                        <div class="text-muted-ems" th:text="${#strings.isEmpty(query)} ? 'Showing' : 'Matching your search'">Showing</div>
+                        <div class="stat-value" th:text="${#lists.size(employees)}">0</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <form th:action="@{/dashboard}" method="get" class="row g-2 mb-3" role="search">
-            <div class="col-12 col-md-8 col-lg-6">
-                <label for="q" class="visually-hidden">Search employees by name, email or department</label>
-                <input type="search" class="form-control" id="q" name="q" th:value="${query}" maxlength="100"
-                       placeholder="Search by name, email or department">
+        <div class="panel">
+            <div class="panel-pad border-bottom">
+                <form th:action="@{/dashboard}" method="get" class="row g-2 align-items-center" role="search">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <label for="q" class="visually-hidden">Search employees by name, email or department</label>
+                        <input type="search" class="form-control" id="q" name="q" th:value="${query}" maxlength="100"
+                               placeholder="Search by name, email or department">
+                    </div>
+                    <div class="col-auto d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <a class="btn btn-outline-primary" th:href="@{/dashboard}" th:if="${!#strings.isEmpty(query)}">Clear</a>
+                    </div>
+                </form>
             </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary">Search</button>
-                <a class="btn btn-outline-primary" th:href="@{/dashboard}" th:if="${!#strings.isEmpty(query)}">Clear</a>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <caption class="visually-hidden">List of employees</caption>
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Employee</th>
+                        <th scope="col">Department</th>
+                        <th scope="col" class="text-end">Salary</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="e : ${employees}">
+                        <td th:text="${e.id}">1</td>
+                        <th scope="row">
+                            <div class="emp-cell">
+                                <span class="emp-avatar" aria-hidden="true" th:text="${#strings.toUpperCase(#strings.substring(e.name,0,1))}">A</span>
+                                <div>
+                                    <div th:text="${e.name}">Name</div>
+                                    <div class="text-muted-ems fw-normal small" th:text="${e.email}">email</div>
+                                </div>
+                            </div>
+                        </th>
+                        <td><span class="badge-dept" th:text="${e.department}">Dept</span></td>
+                        <td class="text-end" th:text="${#numbers.formatDecimal(e.salary, 1, 'COMMA', 2, 'POINT')}">0.00</td>
+                        <td class="text-nowrap">
+                            <th:block sec:authorize="hasRole('ADMIN')">
+                                <a class="btn btn-sm btn-outline-primary" th:href="@{/edit/{id}(id=${e.id})}"
+                                   th:attr="aria-label='Edit ' + ${e.name}">Edit</a>
+                                <form th:action="@{/delete/{id}(id=${e.id})}" method="post" class="d-inline"
+                                      onsubmit="return confirm('Delete this employee record? This cannot be undone.');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                            th:attr="aria-label='Delete ' + ${e.name}">Delete</button>
+                                </form>
+                            </th:block>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(employees)}">
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <p class="h5 mb-1" th:text="${#strings.isEmpty(query)} ? 'No employees yet' : 'No results found'">No employees yet</p>
+                                <p class="mb-0" th:text="${#strings.isEmpty(query)} ? 'Records will appear here once they are added.' : 'Try a different name, email or department.'">Records will appear here.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-        </form>
-
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <caption class="visually-hidden">List of employees</caption>
-                <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Department</th>
-                    <th scope="col" class="text-end">Salary</th>
-                    <th scope="col">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="e : ${employees}">
-                    <td th:text="${e.id}">1</td>
-                    <th scope="row" th:text="${e.name}">Name</th>
-                    <td th:text="${e.email}">email</td>
-                    <td th:text="${e.department}">Dept</td>
-                    <td class="text-end" th:text="${#numbers.formatDecimal(e.salary, 1, 'COMMA', 2, 'POINT')}">0.00</td>
-                    <td class="text-nowrap">
-                        <th:block sec:authorize="hasRole('ADMIN')">
-                            <a class="btn btn-sm btn-outline-primary" th:href="@{/edit/{id}(id=${e.id})}"
-                               th:attr="aria-label='Edit ' + ${e.name}">Edit</a>
-                            <form th:action="@{/delete/{id}(id=${e.id})}" method="post" class="d-inline"
-                                  onsubmit="return confirm('Delete this employee record? This cannot be undone.');">
-                                <button type="submit" class="btn btn-sm btn-outline-danger"
-                                        th:attr="aria-label='Delete ' + ${e.name}">Delete</button>
-                            </form>
-                        </th:block>
-                    </td>
-                </tr>
-                <tr th:if="${#lists.isEmpty(employees)}">
-                    <td colspan="6" class="text-center text-muted-ems py-4"
-                        th:text="${#strings.isEmpty(query)} ? 'No employees yet.' : 'No employees match your search.'">No employees yet.</td>
-                </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 </main>

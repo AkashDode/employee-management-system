@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Not Found')}"></head>
+<body>
+<header th:replace="~{layout :: navbar}"></header>
+<main id="main" class="container py-5 text-center">
+    <div class="error-code" aria-hidden="true">404</div>
+    <h1 class="h2 mt-2">Page not found</h1>
+    <p class="lead text-muted-ems mb-4">We could not find what you were looking for. The record may have been removed.</p>
+    <a class="btn btn-primary btn-lg" th:href="@{/}">Back to home</a>
+</main>
+<th:block th:replace="~{layout :: scripts}"></th:block>
+</body>
+</html>
